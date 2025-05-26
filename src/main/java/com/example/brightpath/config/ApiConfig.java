@@ -14,7 +14,7 @@ public class ApiConfig implements WebMvcConfigurer {
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")
-                .allowedOrigins("*")
+                .allowedOriginPatterns("http://localhost:*", "https://*.railway.app")
                 .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
                 .allowedHeaders("*")
                 .allowCredentials(true);
@@ -95,10 +95,12 @@ public class ApiConfig implements WebMvcConfigurer {
      * 
      * Submission Endpoints (/api/submissions):
      * - POST /api/submissions - Create submission
-     * - PUT /api/submissions/assignment/{assignmentId}/student/{studentId} - Update submission
+     * - PUT /api/submissions/assignment/{assignmentId}/student/{studentId} - Update
+     * submission
      * - GET /api/submissions - Get all submissions
      * - GET /api/submissions/student/{studentId} - Get submissions by student
-     * - GET /api/submissions/assignment/{assignmentId} - Get submissions by assignment
+     * - GET /api/submissions/assignment/{assignmentId} - Get submissions by
+     * assignment
      * - DELETE /api/submissions/{id} - Delete submission
      */
-} 
+}
