@@ -1,7 +1,10 @@
 package com.example.brightpath.config;
 
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.web.filter.CorsFilter;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 /**
@@ -11,20 +14,33 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @Configuration
 public class ApiConfig implements WebMvcConfigurer {
 
-    @Override
-    public void addCorsMappings(CorsRegistry registry) {
-        registry.addMapping("/**")
-                .allowedOriginPatterns(
-                        "http://localhost:*",
-                        "https://*.railway.app",
-                        "https://frontendmalith.vercel.app",
-                        "https://*.vercel.app")
-                .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH")
-                .allowedHeaders("Authorization", "Content-Type", "X-Requested-With", "Accept", "Origin",
-                        "Access-Control-Request-Method", "Access-Control-Request-Headers")
-                .exposedHeaders("Authorization")
-                .allowCredentials(true)
-                .maxAge(3600);
+    @Bean
+    public CorsFilter corsFilter() {
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        CorsConfiguration config = new CorsConfiguration();
+
+        // Allow all origins for development
+        config.addAllowedOrigin("https://frontendmalith.vercel.app");
+        config.addAllowedOrigin("http://localhost:3000");
+        config.addAllowedOrigin("http://localhost:5173");
+
+        // Allow all HTTP methods
+        config.addAllowedMethod("*");
+
+        // Allow all headers
+        config.addAllowedHeader("*");
+
+        // Allow credentials
+        config.setAllowCredentials(true);
+
+        // Expose headers
+        config.addExposedHeader("Authorization");
+        config.addExposedHeader("Content-Type");
+
+        // Apply this configuration to all paths
+        source.registerCorsConfiguration("/**", config);
+
+        return new CorsFilter(source);
     }
 
     /**
