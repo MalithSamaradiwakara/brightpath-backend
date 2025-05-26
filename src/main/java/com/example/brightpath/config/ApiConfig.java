@@ -14,7 +14,11 @@ public class ApiConfig implements WebMvcConfigurer {
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")
-                .allowedOriginPatterns("http://localhost:*", "https://*.railway.app")
+                .allowedOriginPatterns(
+                        "http://localhost:*",
+                        "https://*.railway.app",
+                        "https://frontendmalith.vercel.app",
+                        "https://*.vercel.app")
                 .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
                 .allowedHeaders("*")
                 .allowCredentials(true);
