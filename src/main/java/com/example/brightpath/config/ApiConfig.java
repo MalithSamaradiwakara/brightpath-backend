@@ -19,9 +19,12 @@ public class ApiConfig implements WebMvcConfigurer {
                         "https://*.railway.app",
                         "https://frontendmalith.vercel.app",
                         "https://*.vercel.app")
-                .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
-                .allowedHeaders("*")
-                .allowCredentials(true);
+                .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH")
+                .allowedHeaders("Authorization", "Content-Type", "X-Requested-With", "Accept", "Origin",
+                        "Access-Control-Request-Method", "Access-Control-Request-Headers")
+                .exposedHeaders("Authorization")
+                .allowCredentials(true)
+                .maxAge(3600);
     }
 
     /**
