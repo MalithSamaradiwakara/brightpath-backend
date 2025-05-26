@@ -4,16 +4,21 @@ FROM eclipse-temurin:21-jdk-alpine
 # Set working directory
 WORKDIR /app
 
-# Copy Maven wrapper and pom.xml
-COPY mvnw .
-COPY .mvn .mvn
+# Install necessary packages
+RUN apk add --no-cache curl
+
+# Download Maven wrapper
+RUN curl -o mvnw https://raw.githubusercontent.com/takari/maven-wrapper/master/mvnw && \
+    chmod +x mvnw && \
+    mkdir -p .mvn/wrapper && \
+    curl -o .mvn/wrapper/maven-wrapper.jar https://repo.maven.apache.org/maven2/io/takari/maven-wrapper/0.5.6/maven-wrapper-0.5.6.jar && \
+    curl -o .mvn/wrapper/maven-wrapper.properties https://raw.githubusercontent.com/takari/maven-wrapper/master/.mvn/wrapper/maven-wrapper.properties
+
+# Copy pom.xml
 COPY pom.xml .
 
 # Copy source code
 COPY src ./src
-
-# Make mvnw executable
-RUN chmod +x mvnw
 
 # Build the application
 RUN ./mvnw clean package -DskipTests
